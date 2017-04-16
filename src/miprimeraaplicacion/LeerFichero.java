@@ -15,20 +15,18 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class LeerFichero {
-    String archivo=""; 
-    public static void muestraContenido(String archivo) throws FileNotFoundException, IOException {
-        String cadena;
-        FileReader f = new FileReader(archivo);
+    public String archivo=""; 
+    public String muestraContenido(String archivo2) throws FileNotFoundException, IOException {
+        String cadena="";
+        FileReader f = new FileReader(archivo2);
         BufferedReader b = new BufferedReader(f);
         while((cadena = b.readLine())!=null) {
-            archivo=archivo+cadena;
+            archivo=archivo+cadena+"\n";
         }
         b.close();
         System.out.println(archivo);
+        
+        return archivo.toLowerCase();
     }
-
-    public static void main(String[] args) throws IOException {
-        muestraContenido("C:\\Users\\yaren\\Desktop\\hola.txt");
-    }
-   
+     
 }
