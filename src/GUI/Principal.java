@@ -5,34 +5,52 @@
  */
 package GUI;
 
+import javax.swing.JTextArea;
 /**
  *
  * @author PRINCIPAL
  */
 public class Principal extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Principal
-     */
-    int j=0;//indice de letra del string
-    public Principal() {
-        initComponents();
+   private int j=0;
+   private String typo="";
+   private String[] reservadas= {"auto","const","double","float","int","short","struct","unsigned","break","continue",
+                                 "else","for","long","signed","switch","void","case","default","enum","goto","register",
+                                 "sizeof","typedef","volatile","char","do","extern","if","return","static","union","while",
+                                 "namespace","try","bool","new","catch","false","template","typename","class","private","this",
+                                 "using","inline","public","throw","delete","protected","true"};
+  ;
+   
+   
+    public boolean buscar(String id){
+        int im=0;
+        boolean existe=false;
+        for(int i=0;i<reservadas.length;i++){
+            if(id.compareTo(reservadas[i])==0){
+                im++;
+            }
+        }
+        if(im!=0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
-    
     public String Proceso(){
         //Aqui va el proceso al dar click al boton
-        String texto=jTextField1.getText()+" $";//string que contiene el texto
+        String texto= getTextArea1().getText()+" $";//string que contiene el texto
         String tokken="";
+        String tipo="";
         char c;//cada letra del string
         
-        while(texto.charAt(j)==' '){
+        while(texto.charAt(j)==' ' ||texto.charAt(j)=='\n'){
             j++;
         }
         
         c=texto.charAt(j);
         
         if(c=='$'){
-            jButton1.setEnabled(false);
+            getjButton1().setEnabled(false);
             return "Finalizado";
         }
         if(c>='a' && c<='z'){
@@ -40,16 +58,22 @@ public class Principal extends javax.swing.JFrame {
 			 tokken = tokken+c;
 			 j++;
 			 c = texto.charAt(j);
+                         tipo="ID";
 		  }
+            if(buscar(tokken)){
+                ////////////Si es reservada
+                tipo="Reserved";
+            }
         }else if (c>='0' && c<='9')	{  // Numero
 		  while (c>='0' && c<='9')	{
 			 tokken = tokken+c;
 			 j++;
 			 c = texto.charAt(j);
+                         tipo="Num";
 		  }
 	  }
 	  else if (c==',' || c=='(' || c==')' || c=='=' || c=='*' || c=='/' || c=='-' || c=='+' || 
-	           c=='<' || c=='>' || c==';')	{  // Operador
+	           c=='<' || c=='>' || c==';'|| c=='{'|| c=='}')	{  // Operador
 	        tokken = ""+c;
                 if ((c=='-' && texto.charAt(j+1)=='-') ||
                     (c=='+' && texto.charAt(j+1)=='+') ||
@@ -60,14 +84,111 @@ public class Principal extends javax.swing.JFrame {
 			 j++;
 			}
 			j++;
+                        tipo="signo";
 	  }	  
 	  else if (c=='$') { // fin de cadena
 	      tokken = ""+c;
 	  }
+        
+          jLabel3.setText(tipo);
 	  return tokken;
           //Fin
         
     }
+    
+    /**
+     * @return the jButton1
+     */
+    public javax.swing.JButton getjButton1() {
+        return jButton1;
+    }
+
+    /**
+     * @param jButton1 the jButton1 to set
+     */
+    public void setjButton1(javax.swing.JButton jButton1) {
+        this.jButton1 = jButton1;
+    }
+
+    /**
+     * @return the jLabel1
+     */
+    public javax.swing.JLabel getjLabel1() {
+        return jLabel1;
+    }
+
+    /**
+     * @param jLabel1 the jLabel1 to set
+     */
+    public void setjLabel1(javax.swing.JLabel jLabel1) {
+        this.jLabel1 = jLabel1;
+    }
+
+    /**
+     * @return the jLabel2
+     */
+    public javax.swing.JLabel getjLabel2() {
+        return jLabel2;
+    }
+
+    /**
+     * @param jLabel2 the jLabel2 to set
+     */
+    public void setjLabel2(javax.swing.JLabel jLabel2) {
+        this.jLabel2 = jLabel2;
+    }
+
+    /**
+     * @return the jPanel1
+     */
+    public javax.swing.JPanel getjPanel1() {
+        return jPanel1;
+    }
+
+    /**
+     * @param jPanel1 the jPanel1 to set
+     */
+    public void setjPanel1(javax.swing.JPanel jPanel1) {
+        this.jPanel1 = jPanel1;
+    }
+
+    /**
+     * @return the jScrollPane1
+     */
+    public javax.swing.JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    /**
+     * @param jScrollPane1 the jScrollPane1 to set
+     */
+    public void setjScrollPane1(javax.swing.JScrollPane jScrollPane1) {
+        this.jScrollPane1 = jScrollPane1;
+    }
+
+    /**
+     * @return the jTextArea1
+     */
+    public javax.swing.JTextArea getjTextArea1() {
+        return jTextArea1;
+    }
+
+    /**
+     * @param jTextArea1 the jTextArea1 to set
+     */
+    public void setjTextArea1(javax.swing.JTextArea jTextArea1) {
+        this.jTextArea1 = jTextArea1;
+    }
+
+    /**
+     * Creates new form Principal
+     */
+    
+    public Principal() {
+        initComponents();
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -80,19 +201,15 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Texto");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Introduzca codigo: ");
 
         jButton1.setText("Tokken");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -103,46 +220,61 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel2.setText("Vacio");
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel3.setText("Tipo: ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(102, 102, 102)
-                        .addComponent(jButton1)
-                        .addGap(0, 101, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)
+                                .addGap(39, 39, 39))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE))))))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(126, 126, 126)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(jButton1)
+                        .addGap(38, 38, 38)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,14 +284,10 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        jLabel2.setText(Proceso());
+        
+        getjLabel2().setText(Proceso());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -201,7 +329,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+     public JTextArea getTextArea1(){
+        return jTextArea1;
+    }
 }
