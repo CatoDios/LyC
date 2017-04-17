@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package GUI;
+import java.io.File;
+import javax.swing.JFileChooser;
 import miprimeraaplicacion.*;
 import javax.swing.JTextArea;
 /**
@@ -73,7 +75,7 @@ public class Principal extends javax.swing.JFrame {
 		  }
 	  }
 	  else if (c==',' || c=='(' || c==')' || c=='=' || c=='*' || c=='/' || c=='-' || c=='+' || 
-	           c=='<' || c=='>' || c==';'|| c=='{'|| c=='}')	{  // Operador
+	           c=='<' || c=='>' || c==';'|| c=='{'|| c=='}'|| c=='['|| c==']')	{  // Operador
 	        tokken = ""+c;
                 if ((c=='-' && texto.charAt(j+1)=='-') ||
                     (c=='+' && texto.charAt(j+1)=='+') ||
@@ -304,9 +306,17 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        File fichero=null;
         LeerFichero texto=new LeerFichero();
+        JFileChooser fc=new JFileChooser();
+        int seleccion=fc.showOpenDialog(jPanel1);
+        if(seleccion==JFileChooser.APPROVE_OPTION){
+            fichero=fc.getSelectedFile();
+            j=0;
+            jButton1.setEnabled(true);
+        }
         try{
-            String palabras=texto.muestraContenido("C:\\Users\\yaren\\Desktop\\hola.txt");
+            String palabras=texto.muestraContenido(fichero);
             jTextArea1.setText(palabras);
         }catch(Exception FileNotFoundException){
             System.out.print("Archivo no encontrado");

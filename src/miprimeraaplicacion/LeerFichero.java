@@ -10,13 +10,14 @@ package miprimeraaplicacion;
  * @author PRINCIPAL
  */
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class LeerFichero {
     public String archivo=""; 
-    public String muestraContenido(String archivo2) throws FileNotFoundException, IOException {
+    public String muestraContenido(File archivo2) throws FileNotFoundException, IOException {
         String cadena="";
         FileReader f = new FileReader(archivo2);
         BufferedReader b = new BufferedReader(f);
